@@ -103,13 +103,18 @@ class ZhiHu():
 
     def get_img(self,url):
         global  _session
+        r=_session.get(url).text
         pat_img=re.compile('<noscript><img src="([\s\S]*?)"')
-        url_list=re.findall(pat_img,_session.get(url).text)
+        url_list=re.findall(pat_img,r.text)
         i=0
-        for img_url in url_list:
-            i+=1
-            with open(str(i)+'.jpg','bw')as f:
-                f.write(_session.get(img_url).content)
+        try :   
+            for img_url in url_list:
+                i+=1
+                with open(str(i)+'.jpg','bw')as f:
+                    print('下载第'+str(i)+'张')
+                    f.write(_session.get(img_url).content)
+        except :
+            print('可能出了一点问题。。。')
     
     def save_text(self,r):
         global path_for
