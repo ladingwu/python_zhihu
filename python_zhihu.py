@@ -41,8 +41,6 @@ class ZhiHu():
         global question_url
         self.email=input('plesae input your email:')
         self.password=input('please input your password:')
-#        email='1736627100@qq.com',
-#        password='19941018',
         self.captcha=self.save_captcha(self.get_captcha())
         captcha=input('check the captcha and input captcha:')
 
