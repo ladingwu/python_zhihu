@@ -1,6 +1,10 @@
 # python_zhihu
 一个知乎爬虫（最新），模拟登陆，获取答案，
 
+python环境：python3.X
+依赖的包：requests
+
+
 下载文件到某个文件夹，然后运行，根据提示执行程序，
 
 ![](https://github.com/ladingwu/python_zhihu/blob/master/example.jpg)
