@@ -21,12 +21,9 @@ header_data={'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,ima
 class ZhiHu():
 
     _session=None
-    #email=None,
-    #password=None,
-    #xsrf=None
+
     favor_data=100
-    #question_url='https://www.zhihu.com/question/32120582'
-    #path_for=None
+
     def __init__(self):
         self.do_first()
     def get_captcha(self):
@@ -53,8 +50,7 @@ class ZhiHu():
         global xsrf
         r=_session.get('https://www.zhihu.com',headers=header_data,verify=True)
         self.xsrf=re.findall('name="_xsrf" value="([\S\s]*?)"',r.text)[0]
-        #print(r.status_code)
-        #print(self.xsrf)
+
         self.input_data()
         
         
@@ -88,7 +84,7 @@ class ZhiHu():
             cookie=json.load(f)
             _session.cookies.update(cookie)
  
-    def get_text(self,url,answers=15):
+    def get_answer_text(self,url,answers=15):
         global _session
         global favor_data
         r=_session.get(url,headers=header_data,verify=True)
@@ -98,6 +94,7 @@ class ZhiHu():
         #print(_list);
         #favor_list=[int(k) for k in _list]
         favor_list=[]
+        #下面主要是将以“K”为单位的赞同数转化为数字
         for i in _list:
             if 'K' in i:
                 #print('k in'+i)
@@ -114,7 +111,7 @@ class ZhiHu():
             favor_data=0
         self.save_text(r)
 
-    def get_img(self,url):
+    def get_answer_img(self,url):
         global  _session
         r=_session.get(url,headers=header_data,verify=True).text
         item_pattern=re.compile('<div tabindex="-1" class="zm-item-answer  zm-item-expanded"([\S\s]*?)class="meta-item zu-autohide js-noHelp">')
@@ -128,7 +125,7 @@ class ZhiHu():
         img_list=[]
         i=0
         try :
-            #print('items   len---->'+str(len(items)))
+
             for item in items:
 
                 i+=1
@@ -182,8 +179,7 @@ class ZhiHu():
         root_path=os.path.abspath('.')
         p=root_path+'\\'+path+'\\'
         if not os.path.exists(p):
-            os.makedirs(p)
-            
+            os.makedirs(p)   
         return p
     
     def save_text(self,r):
