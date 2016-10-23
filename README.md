@@ -19,4 +19,4 @@ zh.get_answer_text('某问题的url')
 
 下载某个问题下所有的图片：
 
-zh,get_answer_img('某问题的url')
+zh.get_answer_img('某问题的url')
