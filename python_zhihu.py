@@ -142,7 +142,7 @@ class ZhiHu():
             j=0
             for author in authors:
                 img_urls=img_list[j]
-                print(len(img_urls))
+                #print(len(img_urls))
                 if len(img_urls) == 0:
                     continue
                 title_text=title[0];
@@ -162,7 +162,7 @@ class ZhiHu():
                     if len(temp)>0:
                         
                         suffix=temp[len(temp)-1]
-                        print('suffix=  '+suffix)
+                        #print('suffix=  '+suffix)
                     
                     k+=1
                     with open(path+author_text+str(k)+'.'+suffix,'bw')as f:
