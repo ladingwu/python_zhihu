@@ -3,7 +3,7 @@
 
 下载文件到某个文件夹，然后运行，根据提示执行程序，
 
-[如下](https://github.com/ladingwu/python_zhihu/blob/master/example.jpg)
+![](https://github.com/ladingwu/python_zhihu/blob/master/example.jpg)
 
 **验证码问题**：程序会下载验证码到文件目录下，你需要手动填写验证码，登陆一次之后，会记录你的cookies下次可以直接登陆，无需填写密码等，cookies文件也在程序文件目录下。
 
