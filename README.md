@@ -1,5 +1,5 @@
 # python_zhihu
-一个知乎爬虫（最新），模拟登陆，获取答案，
+一个知乎爬虫（最新），模拟登录，获取答案，
 
 python环境：python3.X
 依赖的包：requests
@@ -9,7 +9,7 @@ python环境：python3.X
 
 ![](https://github.com/ladingwu/python_zhihu/blob/master/example.jpg)
 
-**验证码问题**：程序会下载验证码到文件目录下，你需要手动填写验证码，登陆一次之后，会记录你的cookies下次可以直接登陆，无需填写密码等，cookies文件也在程序文件目录下。
+**验证码问题**：程序会下载验证码到文件目录下，你需要手动填写验证码，登录一次之后，会记录你的cookies下次可以直接登录，无需填写密码等，cookies文件也在程序文件目录下。
 
 实例化：
 
