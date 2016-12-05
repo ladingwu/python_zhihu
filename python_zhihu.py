@@ -1,9 +1,8 @@
 #/usr/bin/python
-import requests,re,json,time,os,os.path
+import requests,re,json,time,os,os.path,sys
 import traceback  
 #模拟知乎登陆，主要是获取验证码登陆
 _zhihu_url='https://www.zhihu.com'
-_login_url=_zhihu_url+'/login/email'
 _captcha_url=_zhihu_url+'/captcha.gif?r='
 _captcha_url_end="&type=login";
 header_data={'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -38,7 +37,7 @@ class ZhiHu():
         global email
         global password
         global question_url
-        self.email=input('请输入邮箱:')
+        self.username=input('请输入用户名:')
         self.password=input('请输入密码:')
         self.save_captcha(self.get_captcha())
         self.captcha=input('请输入已下载的验证码:')
@@ -52,11 +51,21 @@ class ZhiHu():
         self.xsrf=re.findall('name="_xsrf" value="([\S\s]*?)"',r.text)[0]
 
         self.input_data()
+        #确定用户名类型
+        if re.search(r'^1\d{10}$', self.username):
+            _type='phone_num'
+            _login_type='/login/phone_num'
+        elif re.search(r'(.+)@(.+)', self.username):
+            _login_type='/login/email'
+            _type='email'
+        else:
+            print('用户名格式不正确')
+            sys.exit(1)
         
         
-        login_data = {' _xsrf':self.xsrf,'email':self.email,'password':self.password,'rememberme':'true'
+        login_data = {' _xsrf':self.xsrf,_type:self.username,'password':self.password,'rememberme':'true'
         ,'captcha':self.captcha}
-        r=_session.post(_login_url,data=login_data,headers=header_data,verify=True)
+        r=_session.post(_zhihu_url+_login_type,data=login_data,headers=header_data,verify=True)
         j=r.json()
         c=int(j['r'])
         if c==0:
