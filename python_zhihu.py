@@ -1,5 +1,7 @@
 #/usr/bin/python
 import requests,re,json,time,os,os.path,sys
+#显示验证码
+from PIL import Image
 import traceback  
 #模拟知乎登陆，主要是获取验证码登陆
 _zhihu_url='https://www.zhihu.com'
@@ -27,11 +29,17 @@ class ZhiHu():
         self.do_first()
     def get_captcha(self):
         return _captcha_url+str(int(time.time()*1000))+_captcha_url_end
-    def save_captcha(self,url):
+    def show_or_save_captcha(self,url):
         global _session
         r=_session.get(url,headers=header_data,verify=True)
         with open("code.gif",'wb') as f:
             f.write(r.content)
+        #显示验证码
+        try:
+            im = Image.open("code.gif")
+            im.show()
+        except:
+            print("请打开下载的验证码文件code.gif")
 
     def input_data(self):
         global email
@@ -39,8 +47,8 @@ class ZhiHu():
         global question_url
         self.username=input('请输入用户名:')
         self.password=input('请输入密码:')
-        self.save_captcha(self.get_captcha())
-        self.captcha=input('请输入已下载的验证码:')
+        self.show_or_save_captcha(self.get_captcha())
+        self.captcha=input('请输入验证码:')
 
       
     def login(self):
