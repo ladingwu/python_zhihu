@@ -115,8 +115,8 @@ class ZhiHu():
         for i in _list:
             if 'K' in i:
                 #print('k in'+i)
-                i.replace('K','000')
-                favor_list.append(int(1))
+                i = i.replace('K','000')
+                favor_list.append(int(i))
             else:
                 #print(i)
                 favor_list.append(int(i))
@@ -217,14 +217,13 @@ class ZhiHu():
                 
                 f.write('问题：'+title[0]+'\n\n')
                 f.write('描述：'+desc[0]+'\n\n')
-                i=0
-                for answer in answer_favor_list:
-                    i+=1
+                #按赞同数多少对答案排序
+                answer_favor_list = sorted(answer_favor_list, reverse=True, key=self.get_int_list)
+                for i,answer in enumerate(answer_favor_list):
                     #print('answer[0]--->'+answer[0])
-
-                    if(self.getInt(answer[0])>favor_data):
-                        f.write('\n-------------------''答案'+str(i)+'(赞同：'+answer[0]+')''---------------------\n')
-                        f.write('\n答案'+str(i)+'(赞同：'+answer[0]+')-->'+re.sub(pat_sub,'\n',answer[1]))
+                    if(self.get_int(answer[0])>favor_data):
+                        f.write('\n-------------------''答案'+str(i+1)+'(赞同：'+answer[0]+')''---------------------\n')
+                        f.write('\n答案'+str(i+1)+'(赞同：'+answer[0]+')-->'+re.sub(pat_sub,'\n',answer[1]))
                         f.write('\n++++++++++++++++++++++++this answer is over++++++++++++++++++++++++++++++')
                         f.write('\n\n')
             except Exception as e:
@@ -232,10 +231,12 @@ class ZhiHu():
                 traceback.print_exc()
     def get(self,url):
         return _session.get(url,headers=header_data,verify=True)
-    def getInt(self ,s):
+    def get_int(self ,s):
         if 'K' in s:
             return int(s.replace('K','000'))
         return int(s)
+    def get_int_list(self, answer_list):
+        return self.get_int(answer_list[0])
     def do_first(self):
         global _session
         _session=requests.session()
