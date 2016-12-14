@@ -1,5 +1,7 @@
 #/usr/bin/python
 import requests,re,json,time,os,os.path,sys
+#显示验证码
+from PIL import Image
 import traceback  
 #模拟知乎登陆，主要是获取验证码登陆
 _zhihu_url='https://www.zhihu.com'
@@ -27,11 +29,17 @@ class ZhiHu():
         self.do_first()
     def get_captcha(self):
         return _captcha_url+str(int(time.time()*1000))+_captcha_url_end
-    def save_captcha(self,url):
+    def show_or_save_captcha(self,url):
         global _session
         r=_session.get(url,headers=header_data,verify=True)
         with open("code.gif",'wb') as f:
             f.write(r.content)
+        #显示验证码
+        try:
+            im = Image.open("code.gif")
+            im.show()
+        except:
+            print("请打开下载的验证码文件code.gif")
 
     def input_data(self):
         global email
@@ -39,8 +47,8 @@ class ZhiHu():
         global question_url
         self.username=input('请输入用户名:')
         self.password=input('请输入密码:')
-        self.save_captcha(self.get_captcha())
-        self.captcha=input('请输入已下载的验证码:')
+        self.show_or_save_captcha(self.get_captcha())
+        self.captcha=input('请输入验证码:')
 
       
     def login(self):
@@ -107,8 +115,8 @@ class ZhiHu():
         for i in _list:
             if 'K' in i:
                 #print('k in'+i)
-                i.replace('K','000')
-                favor_list.append(int(1))
+                i = i.replace('K','000')
+                favor_list.append(int(i))
             else:
                 #print(i)
                 favor_list.append(int(i))
@@ -209,14 +217,13 @@ class ZhiHu():
                 
                 f.write('问题：'+title[0]+'\n\n')
                 f.write('描述：'+desc[0]+'\n\n')
-                i=0
-                for answer in answer_favor_list:
-                    i+=1
+                #按赞同数多少对答案排序
+                answer_favor_list = sorted(answer_favor_list, reverse=True, key=self.get_int_list)
+                for i,answer in enumerate(answer_favor_list):
                     #print('answer[0]--->'+answer[0])
-
-                    if(self.getInt(answer[0])>favor_data):
-                        f.write('\n-------------------''答案'+str(i)+'(赞同：'+answer[0]+')''---------------------\n')
-                        f.write('\n答案'+str(i)+'(赞同：'+answer[0]+')-->'+re.sub(pat_sub,'\n',answer[1]))
+                    if(self.get_int(answer[0])>favor_data):
+                        f.write('\n-------------------''答案'+str(i+1)+'(赞同：'+answer[0]+')''---------------------\n')
+                        f.write('\n答案'+str(i+1)+'(赞同：'+answer[0]+')-->'+re.sub(pat_sub,'\n',answer[1]))
                         f.write('\n++++++++++++++++++++++++this answer is over++++++++++++++++++++++++++++++')
                         f.write('\n\n')
             except Exception as e:
@@ -224,10 +231,12 @@ class ZhiHu():
                 traceback.print_exc()
     def get(self,url):
         return _session.get(url,headers=header_data,verify=True)
-    def getInt(self ,s):
+    def get_int(self ,s):
         if 'K' in s:
             return int(s.replace('K','000'))
         return int(s)
+    def get_int_list(self, answer_list):
+        return self.get_int(answer_list[0])
     def do_first(self):
         global _session
         _session=requests.session()
