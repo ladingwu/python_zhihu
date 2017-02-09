@@ -2,7 +2,8 @@
 import requests,re,json,time,os,os.path,sys
 #显示验证码
 from PIL import Image
-import traceback  
+import traceback
+import json
 #模拟知乎登陆，主要是获取验证码登陆
 _zhihu_url='https://www.zhihu.com'
 _captcha_url=_zhihu_url+'/captcha.gif?r='
@@ -36,6 +37,7 @@ class ZhiHu():
             f.write(r.content)
         #显示验证码
         try:
+            print("haha")
             im = Image.open("code.gif")
             im.show()
         except:
@@ -198,7 +200,14 @@ class ZhiHu():
         if not os.path.exists(p):
             os.makedirs(p)   
         return p
-    
+
+    #def getAnswerByPage(self):
+        #t='include=data%5B*%5D.is_normal%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccollapsed_counts%2Creviewing_comments_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Crelationship.is_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B*%5D.author.is_blocking%2Cis_blocked%2Cis_followed%2Cvoteup_count%2Cmessage_thread_token%2Cbadge%5B%3F(type%3Dbest_answerer)%5D.topics'
+        #r=_session.get('https://www.zhihu.com/api/v4/questions/'+'48337357'+'/answers?+'+t+'&offset=0&limit=20&sort_by=default',headers=header_data,verify=True)
+        #jdata=json.loads(r.text);
+        #return jdata
+
+            
     def save_text(self,r):
         global path_for
         pattern_title=re.compile('<span class="zm-editable-content">([\s\S]*?)</span>')
