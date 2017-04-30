@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #/usr/bin/python
 import requests,re,json,time,os,os.path,sys
 #显示验证码
@@ -47,10 +48,10 @@ class ZhiHu():
         global email
         global password
         global question_url
-        self.username=input('请输入用户名:')
-        self.password=input('请输入密码:')
+        self.username=raw_input('请输入用户名:')
+        self.password=raw_input('请输入密码:')
         self.show_or_save_captcha(self.get_captcha())
-        self.captcha=input('请输入验证码:')
+        self.captcha=raw_input('请输入验证码:')
 
       
     def login(self):
